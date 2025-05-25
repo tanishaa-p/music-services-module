@@ -17,7 +17,9 @@ https://github.com/user-attachments/assets/f910fe85-2aae-473f-a4b6-cb4063d8aa44
 
 
 ## App Apk :
-[app-release.apk](build%2Fapp%2Foutputs%2Fflutter-apk%2Fapp-release.apk)
+
+https://github.com/tanishaa-p/music-services-module/releases/download/v1.0.0/app-release.apk
+
 ## Folder structure:
 - `music_services_module_assignment/`
   - `assets/`
