@@ -3,10 +3,18 @@
 ## Screen Recording:
 
 Pixel 7 Pro Emulator:
-[Android Emulator - Pixel_7_Pro_API_34_Recording.mp4](..%2F..%2FDownloads%2FAndroid%20Emulator%20-%20Pixel_7_Pro_API_34_Recording.mp4)
+
+
+https://github.com/user-attachments/assets/d0d68392-c366-45b1-806d-b7752a84a12c
+
+
 
 Pixel 2 Emulator (responsiveness and scrollable ListView):
-[Android Emulator - Pixel_2_API_34_Recording.mp4](..%2F..%2FDownloads%2FAndroid%20Emulator%20-%20Pixel_2_API_34_Recording.mp4)
+
+
+https://github.com/user-attachments/assets/f910fe85-2aae-473f-a4b6-cb4063d8aa44
+
+
 
 ## App Apk :
 [app-release.apk](build%2Fapp%2Foutputs%2Fflutter-apk%2Fapp-release.apk)
@@ -45,10 +53,10 @@ Pixel 2 Emulator (responsiveness and scrollable ListView):
   - Service cards and navigation bar load dynamically from Firestore.
   - Responsive design with `MediaQuery`.
   Test: Pixel 2 API 34 emulator
-![Screenshot_1748138010.png](..%2F..%2FOneDrive%2FDesktop%2FScreenshot_1748138010.png)
+![Screenshot_1748138010](https://github.com/user-attachments/assets/a0606c74-300e-4764-ba73-ceda2bd9c1c1)
 
 Pixel 7 Pro API 34 emulator:
-![Screenshot_1748138305.png](..%2F..%2FOneDrive%2FDesktop%2FScreenshot_1748138305.png)
+![Screenshot_1748138305](https://github.com/user-attachments/assets/43a25bbd-548f-4291-a2e3-bbf5da883ece)
 
 
   - Custom made bottom navigation bar to incorporate custom logos and semi-circle indicator (for current active page).
