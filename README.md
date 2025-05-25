@@ -69,6 +69,6 @@ Pixel 7 Pro API 34 emulator:
 
 - **Build:** Asset registration and dependency injection with GetIt.
 
-
-  Thank you for reviewing the project!
+---
+  Thank you for reviewing the assignment!
 
