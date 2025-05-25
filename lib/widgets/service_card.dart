@@ -45,7 +45,7 @@ class ServiceCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(9),
               child: Row(
                 children: [
                     Image.asset(
