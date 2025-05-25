@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/service_model.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -11,74 +12,86 @@ class ServiceCard extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  IconData _getIconFromName(String iconName) {
-    switch (iconName.toLowerCase()) {
-      case 'music_production':
-        return Icons.queue_music;
-      case 'mixing_mastering':
-        return Icons.equalizer;
-      case 'lyrics_writing':
-        return Icons.edit;
-      case 'vocals':
-        return Icons.mic;
-      default:
-        return Icons.music_note;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    double cardHeight = MediaQuery.of(context).size.height * 0.09;
+    double iconWidth=MediaQuery.of(context).size.width * 0.12;;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade800,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
+        height: cardHeight,
+        child: Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.pink.shade400,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                _getIconFromName(service.iconName),
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Stack(
                 children: [
-                  Text(
-                    service.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Image.asset(
+                    service.backgroundAsset,
+                    width: double.infinity,
+                    height: cardHeight,
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    service.description,
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 14,
+                  Container(
+                    width: double.infinity,
+                    height: cardHeight,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF202126).withOpacity(0.87),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                 ],
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey.shade400,
-              size: 16,
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                    Image.asset(
+                      service.iconAsset,
+                      width: iconWidth,
+                      height: cardHeight*.7,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        Icons.broken_image,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        Text(
+                          service.title,
+                          style: GoogleFonts.syne(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          service.description,
+                          style: GoogleFonts.syne(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_right,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

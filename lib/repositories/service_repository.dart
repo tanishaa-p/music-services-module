@@ -6,8 +6,10 @@ class ServiceRepository {
 
   Future<List<ServiceModel>> getServices() async {
     try {
-      final QuerySnapshot querySnapshot =
-      await _firestore.collection('services').get();
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('services')
+          .orderBy('order')
+          .get();
 
       return querySnapshot.docs.map((doc) {
         return ServiceModel.fromFirestore(

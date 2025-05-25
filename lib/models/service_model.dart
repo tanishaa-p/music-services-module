@@ -2,13 +2,15 @@ class ServiceModel {
   final String id;
   final String title;
   final String description;
-  final String iconName;
+  final String iconAsset;
+  final String backgroundAsset;
 
   ServiceModel({
     required this.id,
     required this.title,
     required this.description,
-    required this.iconName,
+    required this.iconAsset,
+    required this.backgroundAsset,
   });
 
   factory ServiceModel.fromFirestore(Map<String, dynamic> data, String id) {
@@ -16,7 +18,8 @@ class ServiceModel {
       id: id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      iconName: data['iconName'] ?? '',
+      iconAsset: data['iconAsset'] ?? '',
+      backgroundAsset: data['backgroundAsset'] ?? '',
     );
   }
 
@@ -24,7 +27,8 @@ class ServiceModel {
     return {
       'title': title,
       'description': description,
-      'iconName': iconName,
+      'iconAsset': iconAsset,
+      'backgroundAsset': backgroundAsset,
     };
   }
 }

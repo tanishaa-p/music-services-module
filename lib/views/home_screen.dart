@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:music_services_module_assignment/models/bottom_navBar_model.dart';
+import 'package:music_services_module_assignment/repositories/bottom_navBar_repository.dart';
+import 'package:music_services_module_assignment/widgets/bottom_navBar.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../view_models/home_view_model.dart';
-import '../widgets/promotional_banner.dart';
 import '../widgets/service_card.dart';
 import '../services/locator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,12 +42,30 @@ const String pianoSvg='''
 </svg>
 
 ''';
-class HomeScreen extends StatelessWidget {
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  List<NavItemModel> _navItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNavItems().then((items) {
+      setState(() {
+        _navItems = items;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final double gradientHeight = MediaQuery.of(context).size.height * 0.43;
+    final double gradientHeight = MediaQuery.of(context).size.height * 0.42;
     final double bannerHeight = MediaQuery.of(context).size.height * 0.23;
     return ChangeNotifierProvider<HomeViewModel>(
       create: (_) => locator<HomeViewModel>()..loadServices(),
@@ -55,244 +75,263 @@ class HomeScreen extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Container(
-              height: gradientHeight, // Adjust height to cover search bar + banner
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFA90140),
-                    Color(0xFF550120),
-                  ],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24),  // Adjust value to match your design
-                  bottomRight: Radius.circular(24), // Adjust value to match your design
-                  topLeft: Radius.circular(0),
-                  topRight: Radius.circular(0),
-                ),
-              ),
+
             ),
 
             SafeArea(
-              child: Column(
-                children: [
-                  // Search Bar
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade800,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Search "Punjabi Lyrics"',
-                                hintStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                                suffixIcon: Container(
-                                  margin: const EdgeInsets.only(right: 8), // Optional: adjust spacing
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        width: 1,
-                                        height: 24,
-                                        color: Colors.grey.withOpacity(0.4), // Faint vertical line
-                                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      ),
-                                      Icon(Icons.mic, color: Colors.grey),
-                                    ],
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(vertical: 12),
-                              ),
-                              style: GoogleFonts.syne(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width:double.infinity,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFFA90140),
+                            Color(0xFF550120),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        // Profile Icon
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade800,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: const Icon(
-                            Icons.account_circle,
-                            color: Colors.white,
-                            size: 32,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Promotional Banner
-                  //const PromotionalBanner(),
-                  SizedBox(
-                    width: double.infinity,
-                    height:bannerHeight,
-                    child:Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Positioned(
-                          left: -28,
-                          top: 0,
-                          bottom: 0,
-                          child: Center(
-                            child: SvgPicture.string(
-                              vinylSvg,
-                              width: 80,
-                              height: 80,
-                            ),
-                          ),
-                        ),
-                        // Piano SVG overflowing right
-                        Positioned(
-                          right: -28,
-                          top: 0,
-                          bottom: 0,
-                          child: Center(
-                            child: SvgPicture.string(
-                              pianoSvg,
-                              width: 80,
-                              height: 80,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Claim your',
-                                style: GoogleFonts.syne(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                'Free Demo',
-                                style: GoogleFonts.lobster(
-                                  color: Colors.white,
-                                  fontSize: 45,
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                'for custom Music Production',
-                                style: GoogleFonts.syne(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                                ),
-                                child: Text(
-                                  'Book Now',
-                                  style: GoogleFonts.syne(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Services Section
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Hire hand-picked Pros for popular music services',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                          topLeft: Radius.circular(0),
+                          topRight: Radius.circular(0),
                         ),
                       ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Services List
-                  Expanded(
-                    child: Consumer<HomeViewModel>(
-                      builder: (context, viewModel, child) {
-                        if (viewModel.isLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(color: Colors.pink),
-                          );
-                        }
-
-                        if (viewModel.error != null) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        children: [
+                          // Search Bar
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            child: Row(
                               children: [
-                                Text(
-                                  'Error: ${viewModel.error}',
-                                  style: const TextStyle(color: Colors.red),
-                                  textAlign: TextAlign.center,
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF2F2F39),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        hintText: 'Search "Punjabi Lyrics"',
+                                        hintStyle: TextStyle(color: Color(0xFF61616B)),
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(Icons.search, color: Colors.white),
+                                        suffixIcon: Container(
+                                          margin: const EdgeInsets.only(right: 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                width: 1,
+                                                height: 24,
+                                                color: Colors.grey.withOpacity(0.4),
+                                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              ),
+                                              Icon(Icons.mic, color: Colors.white),
+                                            ],
+                                          ),
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(vertical: 12),
+                                      ),
+                                      style: GoogleFonts.syne(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () => viewModel.loadServices(),
-                                  child: const Text('Retry'),
+                                const SizedBox(width: 12),
+                                // Profile Icon
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEADDFF),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  padding: const EdgeInsets.all(0),
+                                  margin: const EdgeInsets.fromLTRB(1,0,0,0),
+                                  child: const Icon(
+                                    Icons.person_outline,
+                                    color: Color(0xFF4F378A),
+                                    size: 40,
+                                  ),
                                 ),
                               ],
                             ),
-                          );
-                        }
+                          ),
 
-                        return ListView.builder(
-                          itemCount: viewModel.services.length,
-                          itemBuilder: (context, index) {
-                            final service = viewModel.services[index];
-                            return ServiceCard(
-                              service: service,
-                              onTap: () => viewModel.navigateToServiceDetail(
-                                context,
-                                service,
-                              ),
-                            );
-                          },
-                        );
-                      },
+
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 16, 0, 40),
+                            child:Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  left: -28,
+                                  top: bannerHeight * 0.42,
+                                  child: SvgPicture.string(
+                                      vinylSvg,
+                                      width: 121,
+                                      height: 121,
+                                    ),
+
+                                ),
+                                // Piano SVG overflowing right
+                                Positioned(
+                                  right: -43,
+                                  top: bannerHeight * 0.39,
+                                  child: Center(
+                                    child: SvgPicture.string(
+                                      pianoSvg,
+                                      width: 135,
+                                      height: 135,
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Claim your',
+                                        style: GoogleFonts.syne(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        'Free Demo',
+                                        style: GoogleFonts.lobster(
+                                          color: Colors.white,
+                                          fontSize: 45,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        'for custom Music Production',
+                                        style: GoogleFonts.syne(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      //const SizedBox(height: 16),
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            foregroundColor: Colors.black,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                                            minimumSize: Size(0, 0),
+                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          ),
+                                          child: Text(
+                                            'Book Now',
+                                            style: GoogleFonts.syne(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height:20),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+
+
+                          // Services Section
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Hire hand-picked Pros for popular music services',
+                                  style: GoogleFonts.syne(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+
+
+                          // Services List
+                          Consumer<HomeViewModel>(
+                            builder: (context, viewModel, child) {
+                              if (viewModel.isLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(color: Colors.white),
+                                );
+                              }
+
+                              if (viewModel.error != null) {
+                                return Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Error: ${viewModel.error}',
+                                        style: const TextStyle(color: Colors.red),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      ElevatedButton(
+                                        onPressed: () => viewModel.loadServices(),
+                                        child: const Text('Retry'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+
+                              return ListView.builder(
+                                itemCount: viewModel.services.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final service = viewModel.services[index];
+                                  return ServiceCard(
+                                    service: service,
+                                    onTap: () => viewModel.navigateToServiceDetail(
+                                      context,
+                                      service,
+                                    ),
+                                  );
+
+
+                                },
+                              );
+
+                            },
+                          ),
+
+
+                  ],
+                ),
               ),
             ),
           ],
@@ -300,30 +339,24 @@ class HomeScreen extends StatelessWidget {
 
 
         // Bottom Navigation
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.pink,
-          unselectedItemColor: Colors.grey,
-          currentIndex: 0,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFF2C2D31),
+                //width: 0.6,
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.newspaper),
-              label: 'News',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.feed),
-              label: 'TrueFeed',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.work),
-              label: 'Projects',
-            ),
-          ],
+          ),
+          child: CustomBottomNavBar(
+            currentIndex: _selectedIndex,
+            items: _navItems,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );
